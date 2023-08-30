@@ -96,7 +96,7 @@ resource "aws_instance" "ViktorsSeilisTerraform" {
 
 
     provisioner "local-exec" {
-        command = "ansible-playbook -i ${aws_instance.ViktorsSeilisTerraform.public_ip} --private-key ${tls_private_key.keypair.private_key_pem} nginx.yaml"
+        command = "ansible-playbook -i ${aws_instance.ViktorsSeilisTerraform.public_ip} --private-key \"${tls_private_key.keypair.private_key_pem}\" ./nginx.yaml"
     }
 }
 
