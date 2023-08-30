@@ -60,13 +60,11 @@ resource "aws_security_group" "ViktorsSeilisTerraformSecurityGroup" {
   
 }
 
-resource "tls_private_key" "keypair" {
-    algorithm = "RSA"
-}
+
 
 resource "aws_key_pair" "nginxkey" {
     key_name = "nginx_key"
-    public_key = tls_private_key.keypair.public_key_openssh
+    public_key = file("~/.ssh/id_rsa.pub")
 }
 
 //setup EC2 instance
@@ -81,22 +79,6 @@ resource "aws_instance" "ViktorsSeilisTerraform" {
     //add tags (like instance name, etc.)
     tags = {
       Name = "Viktors Seilis terraform instance"
-    }
-
-    provisioner "remote-exec" {
-      inline = [ "echo 'Wait until SSH is ready'" ]
-
-      connection {
-        type = "ssh"
-        user = local.ssh_user
-        private_key = tls_private_key.keypair.private_key_pem
-        host = aws_instance.ViktorsSeilisTerraform.public_ip
-      }
-    }
-
-
-    provisioner "local-exec" {
-        command = "ansible-playbook -i ${aws_instance.ViktorsSeilisTerraform.public_ip} --private-key \"${tls_private_key.keypair.private_key_pem}\" nginx.yaml"
     }
 }
 
