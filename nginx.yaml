@@ -4,5 +4,20 @@
   remote_user: ubuntu
   become: yes
 
-  roles:
-  - nginx
+- name: update
+  apt:
+    update_cache: yes
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: allow ufw
+  command: ufw allow 'Nginx HTTP'
+
+- name: start nginx
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
