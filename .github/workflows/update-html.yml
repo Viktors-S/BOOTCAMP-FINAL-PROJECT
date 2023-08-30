@@ -23,6 +23,5 @@ jobs:
           target: /home/ubuntu/  # Target directory on the EC2 instance
 
       - name: SSH into EC2 and update files
-        run: |
-          ssh -i ${{ secrets.SSH_KEY }} ubuntu@${{ secrets.EC2_HOST }} 'sudo mv /home/ubuntu/index.html /var/www/html/index.html'
+        run: ssh -i \"${{ secrets.SSH_KEY }}\" ubuntu@${{ secrets.EC2_HOST }} 'sudo mv /home/ubuntu/index.html /var/www/html/index.html'
 
