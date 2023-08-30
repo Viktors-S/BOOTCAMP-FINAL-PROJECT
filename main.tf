@@ -60,14 +60,7 @@ resource "aws_security_group" "ViktorsSeilisTerraformSecurityGroup" {
   
 }
 
-resource "tls_private_key" "keypair" {
-    algorithm = "RSA"
-}
 
-resource "aws_key_pair" "nginxkey" {
-    key_name = "nginx_key"
-    public_key = tls_private_key.keypair.public_key_openssh
-}
 
 //setup EC2 instance
 resource "aws_instance" "ViktorsSeilisTerraform" {
@@ -96,7 +89,7 @@ resource "aws_instance" "ViktorsSeilisTerraform" {
 
 
     provisioner "local-exec" {
-        command = "ansible-playbook -i ${aws_instance.ViktorsSeilisTerraform.public_ip} --private-key \"${tls_private_key.keypair.private_key_pem}\" ./nginx.yaml"
+        command = "ansible-playbook -i ${aws_instance.ViktorsSeilisTerraform.public_ip} --private-key \"${tls_private_key.keypair.private_key_pem}\" nginx.yaml"
     }
 }
 
