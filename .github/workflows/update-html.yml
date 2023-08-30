@@ -22,6 +22,4 @@ jobs:
         source: "index.html"  # Only upload index.html
         target: "/var/www/html"  # Target directory on EC2
 
-    - name: Remove default index file
-      run: |
-        ssh -i ${{ secrets.SSH_KEY }} ubuntu@${{ secrets.EC2_HOST }} "sudo rm /var/www/html/index.nginx-debian.html"
+
