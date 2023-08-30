@@ -60,11 +60,20 @@ resource "aws_security_group" "ViktorsSeilisTerraformSecurityGroup" {
   
 }
 
+resource "tls_private_key" "keypair" {
+    algorithm = "RSA"
+}
+
+resource "aws_key_pair" "nginxkey" {
+    key_name = "nginx_key"
+    public_key = tls_private_key.keypair.public_key_openssh
+}
+
 //setup EC2 instance
 resource "aws_instance" "ViktorsSeilisTerraform" {
     ami = "ami-04e601abe3e1a910f"
     instance_type = "t2.micro"
-    key_name = local.key_name
+    key_name = aws_key_pair.nginxkey.key_name
     associate_public_ip_address = true
 
     vpc_security_group_ids = [aws_security_group.ViktorsSeilisTerraformSecurityGroup.id]
@@ -80,14 +89,14 @@ resource "aws_instance" "ViktorsSeilisTerraform" {
       connection {
         type = "ssh"
         user = local.ssh_user
-        private_key = file(local.private_key_path)
+        private_key = tls_private_key.keypair.private_key_pem
         host = aws_instance.ViktorsSeilisTerraform.public_ip
       }
     }
 
 
     provisioner "local-exec" {
-        command = "ansible-playbook -i ${aws_instance.ViktorsSeilisTerraform.public_ip} --private-key ${local.private_key_path} nginx.yaml"
+        command = "ansible-playbook -i ${aws_instance.ViktorsSeilisTerraform.public_ip} --private-key ${tls_private_key.keypair.private_key_pem} nginx.yaml"
     }
 }
 
