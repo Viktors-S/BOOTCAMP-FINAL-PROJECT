@@ -1,0 +1,10 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: Make shure nginx is running
+  systemd:
+    state: started
+    name: nginx
