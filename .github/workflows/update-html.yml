@@ -23,5 +23,10 @@ jobs:
           target: /home/ubuntu/  # Target directory on the EC2 instance
 
       - name: SSH into EC2 and update files
-        run: ssh -i \"${{ secrets.SSH_KEY }}\" ubuntu@${{ secrets.EC2_HOST }} 'sudo mv /home/ubuntu/index.html /var/www/html/index.html'
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > ssh_key.pem
+          chmod 600 ssh_key.pem
+          scp -i ssh_key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r ./* ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/
+          ssh -i ssh_key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${{ secrets.EC2_HOST }} 'sudo mv /home/ubuntu/index.html /var/www/html/index.html'
+        shell: bash
 
