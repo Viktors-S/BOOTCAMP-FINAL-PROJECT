@@ -3,23 +3,25 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  
+      - main  # Change this to your main branch name
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Deploy to EC2
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.EC2_HOST }}  # EC2 instance host
-        username: ubuntu
-        key: ${{ secrets.SSH_KEY }}
-        source: "index.html"  # Only upload index.html
-        target: "/var/www/html"  # Target directory on EC2
+      - name: Upload index.html
+        run: scp -i ${{ secrets.SSH_KEY }} index.html ubuntu@EC2_HOST:/tmp
 
-
+      - name: SSH into EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: EC2_HOST
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo mv /tmp/index.html /var/www/html/
+            # You might need to restart your web server here, e.g., "sudo systemctl restart apache2"
