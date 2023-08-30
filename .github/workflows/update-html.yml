@@ -14,12 +14,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Upload index.html
-        run: scp -i "${{ secrets.SSH_KEY }}" index.html ubuntu@EC2_HOST:/tmp
+        run: scp -i "${{ secrets.SSH_KEY }}" index.html ubuntu@${{ secrets.EC2_HOST }}:/tmp
 
       - name: SSH into EC2
         uses: appleboy/ssh-action@master
         with:
-          host: EC2_HOST
+          host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
