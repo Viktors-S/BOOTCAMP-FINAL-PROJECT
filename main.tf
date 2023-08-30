@@ -60,7 +60,14 @@ resource "aws_security_group" "ViktorsSeilisTerraformSecurityGroup" {
   
 }
 
+resource "tls_private_key" "keypair" {
+    algorithm = "RSA"
+}
 
+resource "aws_key_pair" "nginxkey" {
+    key_name = "nginx_key"
+    public_key = tls_private_key.keypair.public_key_openssh
+}
 
 //setup EC2 instance
 resource "aws_instance" "ViktorsSeilisTerraform" {
