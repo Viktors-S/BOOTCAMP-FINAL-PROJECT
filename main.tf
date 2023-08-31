@@ -23,8 +23,8 @@ provider "aws" {
 
 
 //setup the security group
-resource "aws_security_group" "ViktorsSeilisTerraformSecurityGroup" {
-    name_prefix = "ViktorsSeilisTerraformSecurityGroup"
+resource "aws_security_group" "ViktorsSeilisAnsibleSecurityGroup" {
+    name_prefix = "ViktorsSeilisAnsible"
 
     // Inbound SSH rule
     ingress {
@@ -68,20 +68,20 @@ resource "aws_key_pair" "nginxkey" {
 }
 
 //setup EC2 instance
-resource "aws_instance" "ViktorsSeilisTerraform" {
+resource "aws_instance" "ViktorsSeilisAnsible" {
     ami = "ami-04e601abe3e1a910f"
     instance_type = "t2.micro"
     key_name = aws_key_pair.nginxkey.key_name
     associate_public_ip_address = true
 
-    vpc_security_group_ids = [aws_security_group.ViktorsSeilisTerraformSecurityGroup.id]
+    vpc_security_group_ids = [aws_security_group.ViktorsSeilisAnsibleSecurityGroup.id]
 
     //add tags (like instance name, etc.)
     tags = {
-      Name = "Viktors Seilis terraform instance"
+      Name = "Viktors Seilis ansible instance"
     }
 }
 
 output "nginx_ip" {
-    value = aws_instance.ViktorsSeilisTerraform.public_ip
+    value = aws_instance.ViktorsSeilisAnsible.public_ip
 }
