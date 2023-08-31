@@ -35,6 +35,11 @@
 - Wait for the playbook to complete and your nginx server can be found at 
     http://YOUR_PUBLIC_IP
 
+#### _TO CREATE A GITHUB WORKLFOW!!!_
+- In github repository secrets add:
+    - SSH_KEY with the value of your ec2 instances /home/ubuntu/.ssh/id_rsa file text
+    - EC2_HOST with the value of your ec2 ip connection (e.g., ec2-***********.eu-central-1.compute.amazonaws.com)
+
 ## _Destroy instance_
 
 - Run the command "terraform destroy"
