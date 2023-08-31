@@ -1,8 +1,3 @@
-
-locals {
-  key_name="ViktorsKEY"
-}
-
 terraform {
     //download the required providers
     required_providers{
@@ -59,7 +54,7 @@ resource "aws_security_group" "ViktorsSeilisAnsibleSecurityGroup" {
 }
 
 
-
+//create keypair with this machines public ssh key
 resource "aws_key_pair" "nginxkey" {
     key_name = "nginx_key"
     public_key = file("~/.ssh/id_rsa.pub")
@@ -80,6 +75,7 @@ resource "aws_instance" "ViktorsSeilisAnsible" {
     }
 }
 
-output "nginx_ip" {
+//output the public ip
+output "public_ip" {
     value = aws_instance.ViktorsSeilisAnsible.public_ip
 }

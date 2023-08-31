@@ -1,21 +1,26 @@
 ---
+#setup for all hosts in provided file with sudo priviliges
 - name: Setup
   hosts: all
   remote_user: ubuntu
   become: yes
   tasks:
+    #Updates apt installer
     - name: update
       apt:
         update_cache: yes
 
+    #Install Nginx
     - name: Install nginx
       apt:
         name: nginx
         state: present
 
+    #Enable ufw Firewall
     - name: allow ufw
       command: ufw allow 'Nginx HTTP'
 
+    #Start nginx if not started
     - name: start nginx
       systemd:
         name: nginx
