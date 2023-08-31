@@ -1,8 +1,6 @@
 
 locals {
-  ssh_user="ubuntu"
-  key_name="ViktorsKEYpersonal"//change
-  private_key_path="~/Downloads/ViktorsKEYpersonal.pem"
+  key_name="ViktorsKEY"
 }
 
 terraform {
