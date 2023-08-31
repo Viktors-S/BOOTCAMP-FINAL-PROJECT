@@ -1,3 +1,12 @@
+# Architecture
+
+- main.tf file houses the terraform configuration.
+- nginx.yaml file houses the configuration necessary to install nginx on th EC2 instance.
+- inv file houses the ansible-playbook inventory where you add your target machines public ip.
+- index.html houses the nginx websites main page html code.
+- update-html.yml is the github workflow wich automatically uploads your code to target EC2 instance.
+
+
 # Instalation
 
 ## _Prerequisites_
